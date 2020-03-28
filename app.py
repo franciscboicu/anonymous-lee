@@ -1,5 +1,5 @@
 from flask import Flask, render_template, flash, redirect, request, url_for, jsonify, session
-import test_data_manager as test_dm
+import test_data_manager as test_dm, message_data
 
 app = Flask(__name__)
 
@@ -15,7 +15,17 @@ def read(code):
 #create the message
 @app.route("/c")
 def create():
-    return "create()"
+    logged_in = False
+
+    _data = {
+        'code': message_data.generate_code(),
+        'msg': "message text",
+        'password': "1234",
+    }
+
+    x = message_data.create(_data)
+
+    return(str(x))
 
 #login
 @app.route("/login")
