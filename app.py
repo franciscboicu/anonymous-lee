@@ -5,14 +5,17 @@ import user_data as ud
 import message_data
 
 app = Flask(__name__)
+app.secret_key = ud.random_api_key()
 
 @app.route("/")
 def index():
-    return render_template("_base.html")
+    username = session['username'] if ud.is_logged_in() else None
+    return render_template("_base.html", username=username)
 
 #read the message
 @app.route("/r/<code>")
 def read(code):
+    if not ud.is_logged_in(): return redirect('/login')
     return 'read('+str(code)+')';
 
 #create the message
@@ -36,12 +39,15 @@ def create():
 #login
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    if ud.is_logged_in():
+        return redirect('/')
     if request.method == 'POST':
         username = request.form.get('username')
         text_password = request.form.get('password')
         if ud.check_login_credentials(username, text_password):
-            print('Log In successful')
-            return redirect('/login')
+            session['username'] = username
+            session['logged_in'] = True
+            return redirect('/')
         else:
             print('Invalid username or password')
             return redirect('/login')
