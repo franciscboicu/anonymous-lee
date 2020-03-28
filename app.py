@@ -16,19 +16,22 @@ def read(code):
     return 'read('+str(code)+')';
 
 #create the message
-@app.route("/c")
+@app.route("/c", methods=["GET", "POST"])
 def create():
-    logged_in = False
+    if request.method == 'POST':
+        logged_in = False
 
-    _data = {
-        'code': message_data.generate_code(),
-        'msg': "message text",
-        'password': "1234",
-    }
+        _data = {
+            'code': message_data.generate_code(),
+            'msg': request.form.get("msg"),
+            'password': request.form.get("password"),
+        }
 
-    x = message_data.create(_data)
+        x = message_data.create(_data)
 
-    return(str(x))
+        return(str(x))
+    return render_template("create.html")
+
 
 #login
 @app.route("/login", methods=['GET', 'POST'])
@@ -55,7 +58,7 @@ def register():
             return redirect('/register')
         else:
             print('Registration complete')
-        
+
     return render_template("register.html")
 
 
