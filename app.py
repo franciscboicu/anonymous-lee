@@ -7,13 +7,26 @@ app = Flask(__name__)
 def index():
     return 'index'
 
+#read the message
 @app.route("/r/<code>")
 def read(code):
     return 'read('+str(code)+')';
 
+#create the message
 @app.route("/c")
 def create():
     return "create()"
+
+#login
+@app.route("/login")
+def login():
+    return "login()"
+
+#register
+@app.router("/register")
+def register():
+    return "register()"
+
 
 @app.route('/test')
 def test():
