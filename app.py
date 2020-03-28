@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return 'index'
+    return render_template("_base.html")
 
 #read the message
 @app.route("/r/<code>")
@@ -20,12 +20,12 @@ def create():
 #login
 @app.route("/login")
 def login():
-    return "login()"
+    return render_template("login.html")
 
 #register
-@app.router("/register")
+@app.route("/register")
 def register():
-    return "register()"
+    return render_template("register.html")
 
 
 @app.route('/test')
