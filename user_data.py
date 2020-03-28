@@ -2,9 +2,9 @@ import db, bcrypt, hashlib
 
 
 @db.use
-def check_valid_registration_username(cursor, username):
+def register_user(cursor, username, text_password):
     """
-    Return True if valid, False if not
+    user_info: list [username, text_password]
     """
     query = f""" SELECT username FROM users; """
     cursor.execute(query)
@@ -12,17 +12,10 @@ def check_valid_registration_username(cursor, username):
     for user in all_usernames:
         if user['username'] == username: 
             return False
-    return True
-
-
-@db.use
-def register_user(cursor, username, text_password):
-    """
-    user_info: list [username, text_password]
-    """
     md5_password = hashlib.md5(text_password.encode()).hexdigest()
-    query = f""" INSERT INTO users VALUES ({username}, {md5_password}); """
+    query = f""" INSERT INTO users VALUES (DEFAULT, '{username}', '{md5_password}'); """
     cursor.execute(query)
+    return True
 
 
 @db.use
