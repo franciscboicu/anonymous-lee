@@ -15,12 +15,13 @@ def index():
 #read the message
 @app.route("/r/<code>")
 def read(code):
+    if not ud.is_logged_in(): return redirect('/login')
     return 'read('+str(code)+')';
 
 #create the message
 @app.route("/c")
 def create():
-    logged_in = False
+    if not ud.is_logged_in(): return redirect('/login')
 
     _data = {
         'code': message_data.generate_code(),
