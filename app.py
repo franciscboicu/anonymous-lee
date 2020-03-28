@@ -1,5 +1,8 @@
 from flask import Flask, render_template, flash, redirect, request, url_for, jsonify, session
-import test_data_manager as test_dm, message_data
+
+import test_data_manager as test_dm
+import user_data as ud
+import message_data
 
 app = Flask(__name__)
 
@@ -28,13 +31,31 @@ def create():
     return(str(x))
 
 #login
-@app.route("/login")
+@app.route("/login", methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        text_password = request.form.get('password')
+        if ud.check_login_credentials(username, text_password):
+            print('Log In successful')
+            return redirect('/login')
+        else:
+            print('Invalid username or password')
+            return redirect('/login')
     return render_template("login.html")
 
 #register
-@app.route("/register")
+@app.route("/register", methods=['GET', 'POST'])
 def register():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        text_password = request.form.get('password')
+        if not ud.register_user(username, text_password):
+            print('Username already in use')
+            return redirect('/register')
+        else:
+            print('Registration complete')
+        
     return render_template("register.html")
 
 
