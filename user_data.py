@@ -4,7 +4,8 @@ import db, bcrypt, hashlib
 @db.use
 def register_user(cursor, username, text_password):
     """
-    user_info: list [username, text_password]
+    Checks for valid username.
+    If username is valid, inserts the new user into the database
     """
     query = f""" SELECT username FROM users; """
     cursor.execute(query)
@@ -21,7 +22,6 @@ def register_user(cursor, username, text_password):
 @db.use
 def check_login_credentials(cursor, username, text_password):
     """
-    user_info: list [username, text_password]
     Returns True if the username and password are correct and False if not
     """
     md5_password = hashlib.md5(text_password.encode()).hexdigest()
