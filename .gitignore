@@ -2,3 +2,5 @@ db.py
 .DS_Store
 __pycache__
 start.sh
+env
+venv
