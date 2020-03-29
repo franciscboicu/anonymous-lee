@@ -20,6 +20,15 @@ def create(data):
     return message_id
 
 @db.use
+def get_message(cursor,code):
+    query = """
+            SELECT * FROM messages LEFT JOIN messages_passwords
+                    ON messages.id = messages_passwords.message_id
+                    WHERE messages.code = %(code)s"""
+    cursor.execute(query,{'code': code})
+    return cursor.fetchone()
+
+@db.use
 def message_insert(cursor,data):
     query = """INSERT INTO messages (msg,code) VALUES (%(msg)s,%(code)s) RETURNING id"""
     cursor.execute( query, {
