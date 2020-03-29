@@ -18,11 +18,11 @@
         <form method="POST" action="{{url_for('create')}}">
           <div class="card-body">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Enter the message" name="msg">
+                <textarea type="text" class="form-control" placeholder="Enter the message" name="msg" rows='15'></textarea>
               </div>
               {% if 'username' in session %}
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Password" name="password">
+                <input type="password" class="form-control" placeholder="Password" name="password">
               </div>
               {% else %}
               <div class="form-group">

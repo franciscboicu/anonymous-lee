@@ -45,3 +45,12 @@ def password_insert(cursor, message_id, password):
         'message_id': message_id,
         'password': password
     })
+
+
+@db.use
+def delete_message(cursor, message):
+    if message['password'] != None:
+        query = f""" DELETE FROM messages_passwords WHERE message_id={message['id']}; """
+        cursor.execute(query)
+    query = f""" DELETE FROM messages WHERE id={message['id']}; """
+    cursor.execute(query)  

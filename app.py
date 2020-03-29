@@ -12,10 +12,27 @@ def index():
     return render_template("create.html")
 
 #read the message
-@app.route("/r/<code>")
+@app.route("/r/<code>", methods=['GET', 'POST'])
 def read(code):
     message = message_data.get_message(code)
-    return str(message)
+    
+    if message != None and (message['password'] == None or message['password'] == ''):
+        access = None
+    else:
+        access = 'Stop'
+    if request.method == 'POST':
+        input_msg_password = request.form.get('input_msg_pass')
+        if input_msg_password == message['password']: 
+            access = True
+        else:
+            access = False
+
+    if access == None or access == True:
+        try:
+            message_data.delete_message(message)
+        except TypeError: pass
+    return render_template('read.html', message=message, access=access)
+
 
 #create the message
 @app.route("/c", methods=["GET", "POST"])

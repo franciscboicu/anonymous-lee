@@ -16,10 +16,10 @@
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
       <h5 class="my-0 mr-md-auto font-weight-normal">Anonymous Lee</h5>
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="#">Create message</a>
+        <a class="p-2 text-dark" href="{{ url_for('index') }}">Create message</a>
       </nav>
       {% if 'logged_in' in session %}
-      <div style="margin-right: 20px;">{{ username }}</div>
+      <div style="margin-right: 20px;">{{ session['username'] }}</div>
       <a class="btn btn-outline-danger" href="{{url_for('logout')}}">Log out</a>
       {% else %}
       <a class="btn btn-outline-secondary mr-2" href="{{url_for('login')}}">Login</a>
@@ -31,9 +31,9 @@
 
       {% block content %}{% endblock %}
 
-      {{session['username']}}
-    </div>
 
+    
+    </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script>
         if ( window.history.replaceState ) {
