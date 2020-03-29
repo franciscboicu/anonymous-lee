@@ -41,13 +41,13 @@
 
         <span id="" class="badge badge-secondary mr-5 ml-5 mb-3">
 
-            <input class="form-control" disabled type="text" value="http://127.0.0.1:5000/r/{{code}}" id="message_url">
+            <input class="form-control"  type="text" value="http://127.0.0.1:5000/r/{{code}}" id="message_url">
 
         </span>
 
-        <button onclick="copyToClipboard()">Copy to clipboard</button>
+        <button id="copy_button" onclick="copyToClipboard()">Copy to clipboard</button>
 
-        <span id="response">
+        <span id="response"class="badge badge-secondary mr-5 ml-5 mb-3">
 
         </span>
 
@@ -76,9 +76,10 @@ function copyToClipboard() {
   message_url.select();
   message_url.setSelectionRange(0, 99999)
   document.execCommand("copy");
-  // alert("Copied the text: " + message_url.value);
-  var response_container = document.getElementById("response");
-  response_container.innerHTML = 'Copied to clipboard';
+  response_container = document.getElementById("response");
+  response.innerHTML = "Copied to clipboard";
+  button = document.getElementById("copy_button");
+  button.remove();
 }
 </script>
 
