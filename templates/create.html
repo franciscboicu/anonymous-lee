@@ -14,14 +14,20 @@
 
       <div class="card mb-4 box-shadow">
 
-        <form method="POST" action="">
+        <form method="POST" action="{{url_for('create')}}">
           <div class="card-body">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Message" name="msg">
+                <input type="text" class="form-control" placeholder="Enter the message" name="msg">
               </div>
+              {% if 'username' in session %}
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Password" name="password">
               </div>
+              {% else %}
+              <div class="form-group">
+                <input type="text" disabled class="form-control" placeholder="Login to be able to add password to message">
+              </div>
+              {% endif %}
             <button type="submit" class="btn btn-lg btn-block btn-primary">Make Anonymous Lee</button>
           </div>
         </form>

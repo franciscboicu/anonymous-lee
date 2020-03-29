@@ -11,35 +11,45 @@ def is_logged_in():
     return False
 
 @db.use
+def username_exists(cursor,username):
+    query = """
+        SELECT *
+        FROM users
+        WHERE username = %(username)s;
+    """
+    cursor.execute(query,{'username': username})
+    return cursor.fetchone()
+
+
+@db.use
 def register_user(cursor, username, text_password):
     """
     Checks for valid username.
     If username is valid, inserts the new user into the database
     """
-    query = f""" SELECT username FROM users; """
-    cursor.execute(query)
-    all_usernames = cursor.fetchall()
-    for user in all_usernames:
-        if user['username'] == username: 
-            return False
-    md5_password = hashlib.md5(text_password.encode()).hexdigest()
-    query = f""" INSERT INTO users VALUES (DEFAULT, '{username}', '{md5_password}'); """
-    cursor.execute(query)
-    return True
+    if username_exists(username):
+        return False
 
+    query = """INSERT INTO users (username,password) VALUES (%(username)s,%(password)s)"""
+    return cursor.execute(query, {"username": username, "password": encrypt_password(text_password)})
 
 @db.use
 def check_login_credentials(cursor, username, text_password):
     """
     Returns True if the username and password are correct and False if not
     """
-    md5_password = hashlib.md5(text_password.encode()).hexdigest()
-    query = f""" SELECT * FROM users; """
-    cursor.execute(query)
-    users = cursor.fetchall()
-    for user in users:
-        if user['username'] == username and user['password'] == md5_password:
-            return True
-    return False
+    query = """
+        SELECT username
+        FROM users
+        WHERE username = %(username)s AND password = %(password)s
+        ;
+    """
+    data = {
+        "username": username,
+        "password": encrypt_password(text_password)
+    }
+    cursor.execute(query, data)
+    return cursor.fetchone()
 
-
+def encrypt_password(password):
+    return hashlib.md5(password.encode()).hexdigest()

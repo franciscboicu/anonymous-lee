@@ -18,19 +18,20 @@
       <nav class="my-2 my-md-0 mr-md-3">
         <a class="p-2 text-dark" href="#">Create message</a>
       </nav>
-      {% if username == None %}
-      <a class="btn btn-outline-secondary mr-2" href="#">Login</a>
-      <a class="btn btn-outline-primary" href="#">Sign up</a>
-      {% else %}
+      {% if 'logged_in' in session %}
       <div style="margin-right: 20px;">{{ username }}</div>
-      <a class="btn btn-outline-danger" href="#">Sign out</a>
+      <a class="btn btn-outline-danger" href="{{url_for('logout')}}">Log out</a>
+      {% else %}
+      <a class="btn btn-outline-secondary mr-2" href="{{url_for('login')}}">Login</a>
+      <a class="btn btn-outline-primary" href="{{url_for('register')}}">Sign up</a>
       {% endif %}
     </div>
 
     <div class="container">
 
       {% block content %}{% endblock %}
-
+      
+      {{session['username']}}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

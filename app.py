@@ -9,8 +9,7 @@ app.secret_key = ud.random_api_key()
 
 @app.route("/")
 def index():
-    username = session['username'] if ud.is_logged_in() else None
-    return render_template("_base.html", username=username)
+    return render_template("create.html")
 
 #read the message
 @app.route("/r/<code>")
@@ -57,16 +56,17 @@ def login():
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get('username')
-        text_password = request.form.get('password')
-        if not ud.register_user(username, text_password):
-            print('Username already in use')
-            return redirect('/register')
-        else:
-            print('Registration complete')
-
+        user_registered = ud.register_user(request.form.get('username'), request.form.get('password'))
+        if user_registered == False:
+            return redirect(url_for("register"))
+        return redirect(url_for("login"))
     return render_template("register.html")
 
+@app.route('/logout')
+def logout():
+    session.pop('username')
+    session.pop('logged_in')
+    return redirect(url_for('index'))
 
 @app.route('/test')
 def test():
