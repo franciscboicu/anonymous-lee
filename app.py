@@ -21,7 +21,6 @@ def read(code):
 @app.route("/c", methods=["GET", "POST"])
 def create():
     if request.method == 'POST':
-        logged_in = False
 
         _data = {
             'code': message_data.generate_code(),
@@ -29,9 +28,8 @@ def create():
             'password': request.form.get("password"),
         }
 
-        x = message_data.create(_data)
+        message_data.create(_data)
 
-        return(str(x))
     return render_template("create.html")
 
 
@@ -40,9 +38,9 @@ def create():
 def login():
     if ud.is_logged_in():
         return redirect('/')
+
     if request.method == 'POST':
-        username = request.form.get('username')
-        text_password = request.form.get('password')
+        username, text_password = request.form.get('username'), request.form.get('password')
         if ud.check_login_credentials(username, text_password):
             session['username'] = username
             session['logged_in'] = True
