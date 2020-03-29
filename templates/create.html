@@ -38,8 +38,21 @@
           <strong>ATTN!</strong> Your message has been created. You can copy the link below.
           <br/>The link is available for a <strong> one time view</strong>
         </div>
-          http://127.0.0.1:5000/r/{{code}}
+
+        <span id="" class="badge badge-secondary mr-5 ml-5 mb-3">
+
+            <input class="form-control" disabled type="text" value="http://127.0.0.1:5000/r/{{code}}" id="message_url">
+
+        </span>
+
+        <button onclick="copyToClipboard()">Copy to clipboard</button>
+
+        <span id="response">
+
+        </span>
+
         {% endif %}
+
 
       </div>
 
@@ -56,5 +69,17 @@
 
 
 </div>
+
+<script>
+function copyToClipboard() {
+  var message_url = document.getElementById("message_url");
+  message_url.select();
+  message_url.setSelectionRange(0, 99999)
+  document.execCommand("copy");
+  // alert("Copied the text: " + message_url.value);
+  var response_container = document.getElementById("response");
+  response_container.innerHTML = 'Copied to clipboard';
+}
+</script>
 
 {% endblock content %}
