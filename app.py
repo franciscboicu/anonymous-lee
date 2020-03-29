@@ -20,17 +20,14 @@ def read(code):
 #create the message
 @app.route("/c", methods=["GET", "POST"])
 def create():
+    code = None
     if request.method == 'POST':
-
-        _data = {
-            'code': message_data.generate_code(),
-            'msg': request.form.get("msg"),
-            'password': request.form.get("password"),
-        }
-
+        _data = {'code': message_data.generate_code(),
+                'msg': request.form.get("msg"),
+                'password': request.form.get("password"),}
         message_data.create(_data)
-
-    return render_template("create.html")
+        code = _data['code']
+    return render_template("create.html", code=code)
 
 
 #login
